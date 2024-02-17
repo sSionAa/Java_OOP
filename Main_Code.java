@@ -114,15 +114,6 @@ public class Main_Code {
             System.out.println();
 
         }
-
-
-//        System.out.println();
-//        persons1.toHeal(persons3);
-//        System.out.println(persons1);
-//        System.out.println(persons3.toAttack(persons1));
-//        System.out.println(persons1);
-//        System.out.println(persons4.getName());
-
     }
 
 }
