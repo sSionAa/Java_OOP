@@ -2,6 +2,7 @@ package Java_OOP;
 
 import java.util.List;
 import java.util.Random;
+import java.util.ArrayList;
 
 import static java.lang.Math.sqrt;
 
@@ -18,9 +19,10 @@ abstract class Persons {
     protected int speed;
     protected int level;
     protected String weapon;
+    protected String nameTeam;
 
     //..//
-    public Persons(int x, int y, String name, String race, int health, int maxHealth, int strength, int magic, int defense, int speed, int level, String weapon) {
+    public Persons(int x, int y, String name, String race, String nameTeam, int health, int maxHealth, int strength, int magic, int defense, int speed, int level, String weapon) {
         this.defense = defense;
         this.health = health;
         this.maxHealth = maxHealth;
@@ -32,6 +34,7 @@ abstract class Persons {
         this.level = level;
         this.weapon = weapon;
         pos = new Place(x, y);
+        this.nameTeam = nameTeam;
 
 
     }
@@ -82,15 +85,17 @@ abstract class Persons {
         return this.defense;
     }
 
-    public String toAttack(Persons persons) {
-        int damage = persons.getStrength() - this.defense;
-        if (damage <= 0) {
+    public void toAttack(Persons persons) {
+        int damage = persons.getHealth() + persons.getDefense() - this.getStrength();
+        persons.setHealth(persons.getHealth() - damage);
+        if (persons.getHealth() <= 0) {
             persons.setHealth(0);
-            return ("Состояние " + persons.getName() + " после атаки: герой умер");
+            System.out.println("Герой умер :(");
+        } else {
+            toUpLevel();
+
+            System.out.println("Состояние " + persons.getName() + " после атаки: " + persons.getHealth());
         }
-        toUpLevel();
-        this.health = this.health - damage;
-        return ("Состояние " + this.name + " после атаки: " + this.health);
 
     }
 
@@ -130,11 +135,14 @@ abstract class Persons {
 
     @Override
     public String toString() {
-        return "Имя героя: " + this.name
-                + ", класс: " + getClass().getSimpleName()
-                + "\nПринадлежность героя: " + this.race
-                + "\nТекущее состояние здоровья: " + this.health
-                + "\nКоординаты (" + pos.X + " : " + pos.Y + ")";
+        return "Имя героя: " + this.name + ", класс: " + getClass().getSimpleName() + "; Команда: " + Persons.this.getNameTeam()
+                + "\nПринадлежность героя: " + this.race + "; Текущее состояние здоровья: " + this.health
+                + "; Координаты (" + pos.X + " : " + pos.Y + ")" + "; Приоритет: " + getSpeeed()
+                + "\n" + "-".repeat(20);
+    }
+
+    public String getNameTeam() {
+        return this.nameTeam;
     }
 
 //    @Override
