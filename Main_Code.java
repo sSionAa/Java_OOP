@@ -1,4 +1,13 @@
 package Java_OOP;
+
+import Java_OOP.*;
+import Java_OOP.Persons;
+
+import java.util.*;
+
+import static java.lang.Math.abs;
+import static java.lang.Math.sqrt;
+
 /*
  *   Проанализировать персонажей "Крестьянин, Разбойник, Снайпер, Колдун, Копейщик, Арбалетчик, Монах".
  *   Для каждого определит 8 полей данных(здоровье, сила итд) 3-4 поля поведения(методов атаковать, вылечить итд).
@@ -46,63 +55,79 @@ import java.util.Random;
 
 public class Main_Code {
     public static void main(String[] args) {
-
-        List<Persons> team1 = createTeam(10, 0);
-        List<Persons> team2 = createTeam(10, 9);
-
-//
-
-        for (Persons persons : team1) {
-            System.out.println("team1");
-            System.out.println(persons.toString());
-            System.out.println();
-        }
-        for (Persons persons : team2) {
-            System.out.println("team2");
-            System.out.println(persons.toString());
-            System.out.println();
-        }
-// ищем в команде лучника (crossbowman) и находим к нему ближайшего противника
-        int count = 0;
-        for (Persons cbm : team1) {
-            if (cbm.getClass().getSimpleName().equals("Crossbowman") || cbm.getClass().getSimpleName().equals("Sniper")) {
-                System.out.println("Ближайший к " + cbm.getName() + ", класс " + cbm.getClass().getSimpleName() + " противник: =>\n" + cbm.getMinDistance(team2));
-                System.out.println();
-                count++;
-            }
-        }
-        if (count == 0) System.out.println("В команде нет лучников и снайперов");
-
-    }
-
-    static List<Persons> createTeam(int quantityHeroes, int y) {
-        List<Persons> team = new ArrayList<>();
-        for (int i = 0; i < quantityHeroes; i++) {
-            switch (new Random().nextInt(1, 8)) {
-                case 1:
-                    team.add(new Magician(Persons.getNewName(), i, y));
-                    break;
-                case 2:
-                    team.add(new Rogue(Persons.getNewName(), i, y));
-                    break;
-                case 3:
-                    team.add(new Crossbowman(Persons.getNewName(), i, y));
-                    break;
-                case 4:
-                    team.add(new Peasant(Persons.getNewName(), i, y));
-                    break;
-                case 5:
-                    team.add(new Sniper(Persons.getNewName(), i, y));
-                    break;
-                case 6:
-                    team.add(new Spearman(Persons.getNewName(), i, y));
-                    break;
-                case 7:
-                    team.add(new Monk(Persons.getNewName(), i, y));
-                    break;
-            }
-        }
-        return team;
+       public static void main(String[] args) {
+         // создаем две команды и объединяем их в одну общую команду
+         ArrayList<Persons> team1 = createTeam(10, 0, "team1");
+         ArrayList<Persons> team2 = createTeam(10, 9, "team2");
+         ArrayList<Persons> allTeam = new ArrayList<>(team1);
+         allTeam.addAll(team2);
+ 
+         System.out.println("-".repeat(16));
+         // сортируем всех игроков по скорости (приоритету)
+         allTeam.sort((o1, o2) -> o2.getSpeeed() - o1.getSpeeed());
+         // проверяем сортировку
+        allTeam.forEach(n -> System.out.println(n));
+         // выводим команды на печать
+ 
+ //        for (Persons persons: team1) {
+ //            System.out.println("team1");
+ //            System.out.println(persons.toString());
+ //            System.out.println();
+ //        }
+ //        for (Persons persons: team2) {
+ //            System.out.println("team2");
+ //            System.out.println(persons.toString());
+ //            System.out.println();
+ //        }
+ 
+         for (Persons cbm : allTeam) {
+             if (cbm.getNameTeam().equals("team1")&&(cbm.getClass().getSimpleName().equals("Crossbowman") || cbm.getClass().getSimpleName().equals("Sniper"))) {
+ 
+                 cbm.getStep(team2);
+                 System.out.println(cbm);
+             }
+ 
+             if (cbm.getNameTeam().equals("team2")&&(cbm.getClass().getSimpleName().equals("Crossbowman") || cbm.getClass().getSimpleName().equals("Sniper"))) {
+ 
+                 cbm.getStep(team1);
+                 System.out.println(cbm);
+             }
+         }
+         allTeam.removeIf(hero -> hero.getHealth() == 0);
+         System.out.println("После атаки осталось: "+ allTeam.size()+ " героев");
+     }
+         static ArrayList<Persons> createTeam ( int quantityHeroes, int y, String nameTeam){
+             ArrayList<Persons> team = new ArrayList<>();
+             for (int i = 0; i < quantityHeroes; i++) {
+                 switch (new Random().nextInt(1, 8)) {
+                     case 1:
+                         team.add(new Magician(Persons.getNewName(), i, y, nameTeam));
+                         break;
+                     case 2:
+                         team.add(new Rogue(Persons.getNewName(), i, y, nameTeam));
+                         break;
+                     case 3:
+                         team.add(new Crossbowman(Persons.getNewName(), i, y, nameTeam, 5));
+                         break;
+                     case 4:
+                         team.add(new Peasant(Persons.getNewName(), i, y, nameTeam));
+                         break;
+                     case 5:
+                         team.add(new Sniper(Persons.getNewName(), i, y, nameTeam, 5));
+                         break;
+                     case 6:
+                         team.add(new Spearman(Persons.getNewName(), i, y, nameTeam));
+                         break;
+                     case 7:
+                         team.add(new Monk(Persons.getNewName(), i, y, nameTeam));
+                         break;
+                 }
+             }
+             return team;
+         }
+ 
+ 
+ }
 
 
 //        Persons magician = new Magician("Lilia");
@@ -128,8 +153,3 @@ public class Main_Code {
 //            System.out.println();
 //
 //        }
-
-
-    }
-
-}
