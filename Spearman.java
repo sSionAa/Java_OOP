@@ -1,7 +1,10 @@
 package Java_OOP;
 
 public class Spearman extends Persons {
-    public Spearman(String name, int x, int y) {
-        super(x, y, name, "Elf", 20, 65, 6, 2, 5, 8, 1, "Spear");
+    public Spearman(String name,int x, int y, String nameTeam) {
+        super(x,y,name, nameTeam,"Elf", 40, 40, 6, 2, 5, 5, 1, "Spear");
+    }
+    @Override
+    public void getStep(ArrayList<Persons> team) {
     }
 }
