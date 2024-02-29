@@ -4,5 +4,5 @@ import java.util.ArrayList;
 
 public interface Step {
 
-    public void getStep(ArrayList<Persons> team);
+    public void getStep(ArrayList<Persons> enemy, ArrayList<Persons> friends);
     }
