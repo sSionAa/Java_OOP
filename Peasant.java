@@ -8,9 +8,16 @@ public class Peasant extends Persons {
         super(x,y,name, nameTeam,"Human", 30, 30, 5, 0, 1, 2, 1, "Axe");
 
     }
+    // @Override
+    // public void getStep(ArrayList<Persons> team) {
+
+    // }
     @Override
-    public void getStep(ArrayList<Persons> team) {
+    public void getStep(ArrayList<Persons> team, ArrayList<Persons> friend) {
 
     }
-
+    public  String getInfo(){
+        return "Фермер";
+    }
 }
+
