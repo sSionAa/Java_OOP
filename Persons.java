@@ -6,9 +6,9 @@ import java.util.ArrayList;
 
 import static java.lang.Math.sqrt;
 
-abstract class Persons {
+public abstract class Persons implements Step {
 
-    protected Place pos;
+    public Place place;
     protected String name;
     protected String race;
     protected int health;
@@ -22,7 +22,7 @@ abstract class Persons {
     protected String nameTeam;
 
     //..//
-    public Persons(int x, int y, String name, String race, String nameTeam, int health, int maxHealth, int strength, int magic, int defense, int speed, int level, String weapon) {
+    public Persons(String name, Place place, String nameTeam, String race, int health, int maxHealth, int strength, int magic, int defense, int speed, int level, String weapon) {
         this.defense = defense;
         this.health = health;
         this.maxHealth = maxHealth;
@@ -33,7 +33,7 @@ abstract class Persons {
         this.speed = speed;
         this.level = level;
         this.weapon = weapon;
-        pos = new Place(x, y);
+        this.place=place;
         this.nameTeam = nameTeam;
 
 
@@ -55,7 +55,7 @@ abstract class Persons {
         return this.health;
     }
 
-    public int setHealth(int health) {
+    private int setHealth(int health) {
         this.health = health;
         return this.health;
     }
@@ -80,7 +80,7 @@ abstract class Persons {
         return this.defense;
     }
 
-    public int setDefense(int defense) {
+    private int setDefense(int defense) {
         this.defense = defense;
         return this.defense;
     }
@@ -88,13 +88,13 @@ abstract class Persons {
     public void toAttack(Persons persons) {
         int damage = persons.getHealth() + persons.getDefense() - this.getStrength();
         persons.setHealth(persons.getHealth() - damage);
-        if (persons.getHealth() <= 0) {
+        if (persons.getHealth() < 0 || persons.getHealth() == 0) {
             persons.setHealth(0);
-            System.out.println("Герой умер :(");
+
         } else {
             toUpLevel();
 
-            System.out.println("Состояние " + persons.getName() + " после атаки: " + persons.getHealth());
+
         }
 
     }
@@ -106,14 +106,12 @@ abstract class Persons {
         return this.health;
     }
 
-    public int toUpLevel() {
+    private int toUpLevel() {
         this.level = this.level + 1;
-        this.strength = this.strength + 5;
-        this.magic = this.magic + 5;
-        this.defense = this.defense + 5;
-        this.speed = this.speed + 5;
+
         return this.level;
     }
+
 
     public static String getNewName() {
         return String.valueOf(Names.values()[new Random().nextInt(Names.values().length - 1)]);
@@ -122,11 +120,11 @@ abstract class Persons {
     public Persons getMinDistance(List<Persons> team) {
         // написать метод по поиску рядом находящегося противника
         double minDistance = sqrt(200);
-        Persons nearEnemy = team.getFirst();
+        Persons nearEnemy = null;
         for (Persons persons : team) {
-            if (Place.getDistance(pos.getX(), pos.getY(), persons.pos.getX(), persons.pos.getY()) <= minDistance) {
+            if ((Place.getDistance(this.place,persons.place) < minDistance || Place.getDistance(this.place,persons.place) == minDistance )&& persons.getHealth()>0) {
                 nearEnemy = persons;
-                minDistance = Place.getDistance(pos.getX(), pos.getY(), persons.pos.getX(), persons.pos.getY());
+                minDistance = Place.getDistance(this.place,persons.place);
             }
         }
 
@@ -134,17 +132,24 @@ abstract class Persons {
     }
 
     @Override
+    // public String toString() {
+    //     return "Имя героя: " + this.name + ", класс: " + getClass().getSimpleName() + "; Команда: " + Persons.this.getNameTeam()
+    //             + "\nПринадлежность героя: " + this.race + "; Текущее состояние здоровья: " + this.health
+    //             + "; Координаты (" + pos.X + " : " + pos.Y + ")" + "; Приоритет: " + getSpeeed()
+    //             + "\n" + "-".repeat(20);
+    // }
     public String toString() {
-        return "Имя героя: " + this.name + ", класс: " + getClass().getSimpleName() + "; Команда: " + Persons.this.getNameTeam()
-                + "\nПринадлежность героя: " + this.race + "; Текущее состояние здоровья: " + this.health
-                + "; Координаты (" + pos.X + " : " + pos.Y + ")" + "; Приоритет: " + getSpeeed()
-                + "\n" + "-".repeat(20);
+        return "Имя героя: " + this.name + ", класс: " + getClass().getSimpleName() + "; \u2665: " + this.health
+                + " ⚔" + this.strength
+                + "\uD83D\uDEE1\uFE0F" + this.defense;
     }
 
     public String getNameTeam() {
         return this.nameTeam;
     }
-
+    public  String getInfo(){
+        return "";
+    }
 //    @Override
 //    public String toString() {
 //        return "Имя героя: " + this.name + ", класс: " + getClass().getSimpleName() + "\nПринадлежность героя: " + this.race + "\nТекущее состояние здоровья: " + this.health;
