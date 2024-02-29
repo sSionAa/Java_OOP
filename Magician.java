@@ -9,8 +9,17 @@ public class Magician extends Persons {
         super(x,y,name, nameTeam,"Human", 60, 60, 10, 10, 10, 3, 1, "Wand");
 
     }
-    @Override
-    public void getStep(ArrayList<Persons> team) {
-    }
+//     @Override
+//     public void getStep(ArrayList<Persons> team) {
+//     }
 
+// }
+
+    @Override
+    public void getStep(ArrayList<Persons> team, ArrayList<Persons> friends) {
+
+    }
+    public  String getInfo(){
+        return "Маг";
+    }
 }
