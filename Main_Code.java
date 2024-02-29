@@ -8,6 +8,8 @@ import java.util.*;
 import static java.lang.Math.abs;
 import static java.lang.Math.sqrt;
 
+    
+
 /*
  *   Проанализировать персонажей "Крестьянин, Разбойник, Снайпер, Колдун, Копейщик, Арбалетчик, Монах".
  *   Для каждого определит 8 полей данных(здоровье, сила итд) 3-4 поля поведения(методов атаковать, вылечить итд).
@@ -65,48 +67,97 @@ import java.util.List;
 import java.util.Random;
 
 public class Main_Code {
+    public static ArrayList<Persons> holyTeam = createTeam(10, 10, "holyTeam");
+    public static ArrayList<Persons> darkTeam = createTeam(10, 1, "darkTeam");
+    public static ArrayList<Persons> allTeam = new ArrayList<>();
+ 
+ 
     public static void main(String[] args) {
        public static void main(String[] args) {
-         // создаем две команды и объединяем их в одну общую команду
-         ArrayList<Persons> team1 = createTeam(10, 0, "team1");
-         ArrayList<Persons> team2 = createTeam(10, 9, "team2");
-         ArrayList<Persons> allTeam = new ArrayList<>(team1);
-         allTeam.addAll(team2);
+            allTeam.addAll(holyTeam);
+            allTeam.addAll(darkTeam);
+           // сортируем всех игроков по скорости (приоритету)
+            //allTeam.sort((o1, o2) -> o2.getSpeeed() - o1.getSpeeed());
+            // проверяем сортировку
+    
+    
+    
+            Scanner scanner = new Scanner(System.in);
+    
+            while (true) {
+                allTeam.sort((o1, o2) -> o2.getSpeeed() - o1.getSpeeed());
+                View.view();
+                scanner.nextLine();
+                int count1=0;
+                int count2=0;
+                for (Persons holy: holyTeam){
+                    count1+=holy.getHealth();
+                }
+                for (Persons dark: holyTeam){
+                    count2+=dark.getHealth();
+                }
+                if (count2==0){
+                    System.out.println("Победила команда holy!");
+                                    break;
+                }
+                if (count1==0){
+                    System.out.println("Победила команда dark!");
+    
+                    break;
+                }
+    
+                for (Persons unit : allTeam) {
+                    if (holyTeam.contains(unit)) unit.getStep(darkTeam, holyTeam);
+                    else unit.getStep(holyTeam, darkTeam);
+                }
+    
+            }
+    
+    
+        }
+
+
+        
+ //         // создаем две команды и объединяем их в одну общую команду
+ //         ArrayList<Persons> team1 = createTeam(10, 0, "team1");
+ //         ArrayList<Persons> team2 = createTeam(10, 9, "team2");
+ //         ArrayList<Persons> allTeam = new ArrayList<>(team1);
+ //         allTeam.addAll(team2);
  
-         System.out.println("-".repeat(16));
-         // сортируем всех игроков по скорости (приоритету)
-         allTeam.sort((o1, o2) -> o2.getSpeeed() - o1.getSpeeed());
-         // проверяем сортировку
-        allTeam.forEach(n -> System.out.println(n));
-         // выводим команды на печать
+ //         System.out.println("-".repeat(16));
+ //         // сортируем всех игроков по скорости (приоритету)
+ //         allTeam.sort((o1, o2) -> o2.getSpeeed() - o1.getSpeeed());
+ //         // проверяем сортировку
+ //        allTeam.forEach(n -> System.out.println(n));
+ //         // выводим команды на печать
  
- //        for (Persons persons: team1) {
- //            System.out.println("team1");
- //            System.out.println(persons.toString());
- //            System.out.println();
- //        }
- //        for (Persons persons: team2) {
- //            System.out.println("team2");
- //            System.out.println(persons.toString());
- //            System.out.println();
- //        }
+ // //        for (Persons persons: team1) {
+ // //            System.out.println("team1");
+ // //            System.out.println(persons.toString());
+ // //            System.out.println();
+ // //        }
+ // //        for (Persons persons: team2) {
+ // //            System.out.println("team2");
+ // //            System.out.println(persons.toString());
+ // //            System.out.println();
+ // //        }
  
-         for (Persons cbm : allTeam) {
-             if (cbm.getNameTeam().equals("team1")&&(cbm.getClass().getSimpleName().equals("Crossbowman") || cbm.getClass().getSimpleName().equals("Sniper"))) {
+ //         for (Persons cbm : allTeam) {
+ //             if (cbm.getNameTeam().equals("team1")&&(cbm.getClass().getSimpleName().equals("Crossbowman") || cbm.getClass().getSimpleName().equals("Sniper"))) {
  
-                 cbm.getStep(team2);
-                 System.out.println(cbm);
-             }
+ //                 cbm.getStep(team2);
+ //                 System.out.println(cbm);
+ //             }
  
-             if (cbm.getNameTeam().equals("team2")&&(cbm.getClass().getSimpleName().equals("Crossbowman") || cbm.getClass().getSimpleName().equals("Sniper"))) {
+ //             if (cbm.getNameTeam().equals("team2")&&(cbm.getClass().getSimpleName().equals("Crossbowman") || cbm.getClass().getSimpleName().equals("Sniper"))) {
  
-                 cbm.getStep(team1);
-                 System.out.println(cbm);
-             }
-         }
-         allTeam.removeIf(hero -> hero.getHealth() == 0);
-         System.out.println("После атаки осталось: "+ allTeam.size()+ " героев");
-     }
+ //                 cbm.getStep(team1);
+ //                 System.out.println(cbm);
+ //             }
+ //         }
+ //         allTeam.removeIf(hero -> hero.getHealth() == 0);
+ //         System.out.println("После атаки осталось: "+ allTeam.size()+ " героев");
+ //     }
          static ArrayList<Persons> createTeam ( int quantityHeroes, int y, String nameTeam){
              ArrayList<Persons> team = new ArrayList<>();
              for (int i = 0; i < quantityHeroes; i++) {
@@ -118,13 +169,13 @@ public class Main_Code {
                          team.add(new Rogue(Persons.getNewName(), i, y, nameTeam));
                          break;
                      case 3:
-                         team.add(new Crossbowman(Persons.getNewName(), i, y, nameTeam, 5));
+                         team.add(new Crossbowman(Persons.getNewName(), i, y, nameTeam, 30));
                          break;
                      case 4:
                          team.add(new Peasant(Persons.getNewName(), i, y, nameTeam));
                          break;
                      case 5:
-                         team.add(new Sniper(Persons.getNewName(), i, y, nameTeam, 5));
+                         team.add(new Sniper(Persons.getNewName(), i, y, nameTeam, 30));
                          break;
                      case 6:
                          team.add(new Spearman(Persons.getNewName(), i, y, nameTeam));
