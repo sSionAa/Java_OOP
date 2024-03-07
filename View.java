@@ -1,5 +1,9 @@
-import Java_OOP.Persons;
+import Java_OOP.Game_OOP.Persons;
+import Java_OOP.Game_OOP.*;
+import Java_OOP.Persons.*;
+import Java_OOP.*;
 import java.util.Collections;
+
 public class View {
     private static int step = 1;
     private static final int[] l = {0};
