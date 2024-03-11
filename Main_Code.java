@@ -79,15 +79,15 @@ public class Main_Code {
  
  
     public static void main(String[] args) {
-            allTeam.addAll(holyTeam);
-            allTeam.addAll(darkTeam);
+            // allTeam.addAll(holyTeam);
+            // allTeam.addAll(darkTeam);
            // сортируем всех игроков по скорости (приоритету)
             //allTeam.sort((o1, o2) -> o2.getSpeeed() - o1.getSpeeed());
             // проверяем сортировку
     
     
     
-            allTeam.addAll(holyTeam);
+        allTeam.addAll(holyTeam);
         allTeam.addAll(darkTeam);
         allTeam.sort((o1, o2) -> o2.getSpeeed() - o1.getSpeeed());
         Scanner scanner = new Scanner(System.in);
